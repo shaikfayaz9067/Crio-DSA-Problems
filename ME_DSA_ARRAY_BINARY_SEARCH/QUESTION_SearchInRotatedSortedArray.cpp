@@ -1,95 +1,85 @@
-#include "../crio/cpp/io/FastIO.hpp"
-#include "../crio/cpp/io/PrintMatrix.hpp"
-#include "../crio/cpp/io/ReadMatrix.hpp"
-#include <bits/stdc++.h>
-using namespace std;
+import java.util.*;
 
 class SearchInRotatedSortedArray {
-  public:
-
-  int binarySearch(vector<int> &nums,int low,int high,int target){
-
-      if(high<low){
-          return -1;
-      }
-      int mid=(low+high)/2;
-
-      if(target==nums[mid]){
-          return mid;
-      }
-      if(target >nums[mid]){
-          return binarySearch(nums,mid+1,high,target);
-         
-      }
-       return binarySearch(nums,low,mid-1,target);
-        
-  }
-
-
-
-    int findPivot(vector<int> &nums,int low,int high){
-
-        if(high<low){
+    
+    int binarySearch(List<Integer> nums, int low, int high, int target) {
+        if (high < low) {
             return -1;
         }
-        if(high==low){
+        int mid = (low + high) / 2;
+        
+        if (target == nums.get(mid)) {
+            return mid;
+        }
+        
+        if (target > nums.get(mid)) {
+            return binarySearch(nums, mid + 1, high, target);
+        }
+        
+        return binarySearch(nums, low, mid - 1, target);
+    }
+
+    int findPivot(List<Integer> nums, int low, int high) {
+        if (high < low) {
+            return -1;
+        }
+        
+        if (high == low) {
             return low;
         }
-       
-        int mid=(low+high)/2;
 
-        if(mid<high && nums[mid]>nums[mid+1]){
-        return mid;
-        }
-        if(mid>0 && nums[mid]<nums[mid-1]){
-        return (mid-1);
-        }
-        if(nums[0]>=nums[mid]){
-        return findPivot(nums,low,mid-1);
-        }
-        return findPivot(nums,mid+1,high);
+        int mid = (low + high) / 2;
 
+        if (mid < high && nums.get(mid) > nums.get(mid + 1)) {
+            return mid;
+        }
+        
+        if (mid > 0 && nums.get(mid) < nums.get(mid - 1)) {
+            return (mid - 1);
+        }
+        
+        if (nums.get(0) >= nums.get(mid)) {
+            return findPivot(nums, low, mid - 1);
+        }
+        
+        return findPivot(nums, mid + 1, high);
     }
 
-    
+    int search(List<Integer> nums, int target) {
+        int n = nums.size();
+        int pivot = findPivot(nums, 0, n - 1);
 
-    int search(vector<int>& nums, int target) {
-        // Your implementation goes here
-
-       int n=nums.size();
-       int pivot=findPivot(nums,0,n-1);
-
-       if(pivot==-1){
-           return binarySearch(nums,0,n-1,target);
-       }
-       if(nums[0]<=target){
-           return binarySearch(nums,0,pivot,target);
-       }
-        return binarySearch(nums,pivot+1,n-1,target);
-        // int ans;
-    	// return ans;
+        if (pivot == -1) {
+            return binarySearch(nums, 0, n - 1, target);
+        }
+        
+        if (nums.get(0) <= target) {
+            return binarySearch(nums, 0, pivot, target);
+        }
+        
+        return binarySearch(nums, pivot + 1, n - 1, target);
     }
-
-};
-
-int main() {
-    FastIO();
-    int n;
-    cin >> n;
-    vector<int> nums;
-    ReadMatrix<int>().OneDMatrix(n, nums);
-
-    int queries;
-    cin >> queries;
-    for (int i = 0; i < queries; i++) {
-        int target;
-        cin >> target;
-        int result = SearchInRotatedSortedArray().search(nums, target);
-        cout << result << "\n";
-    }
-
-    return 0;
 }
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        List<Integer> nums = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            nums.add(scanner.nextInt());
+        }
+        int queries = scanner.nextInt();
+        SearchInRotatedSortedArray search = new SearchInRotatedSortedArray();
+        for (int i = 0; i < queries; i++) {
+            int target = scanner.nextInt();
+            int result = search.search(nums, target);
+            System.out.println(result);
+        }
+        scanner.close();
+    }
+}
+
 
 /* 
 Crio Methodology
